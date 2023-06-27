@@ -1,20 +1,42 @@
-// priceauto.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
+#include "sqlite3.h"
+#include <string>
 
-int main()
-{
-    std::cout << "Hello World!\n";
+std::string quotesql(const std::string& s) {
+	return std::string("'") + s + std::string("'");
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
+int main() {
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+	char* err;
+	sqlite3* db;
+	sqlite3_stmt* stmt;
+	sqlite3_open("myDb.db", &db);
+
+	const char* create_table = "CREATE TABLE IF NOT EXISTS min(symbol text, change numeric, high numeric, low numeric, last numeric, open numeric, volume numeric)";
+	int rc = sqlite3_exec(db, create_table, NULL, NULL, &err);
+
+	if (rc != SQLITE_OK) {
+		std::cout << "err: " << err;
+	}
+
+
+	std::string symbol = "ETHUSDT";
+
+	double test = 5.666;
+
+
+	std::string sql("INSERT INTO min (symbol, change, high, low, last, open, volume) VALUES ("
+		+ quotesql("BTCUSDT") + ","
+		+ quotesql(std::to_string(test)) + ","
+		+ quotesql("2") + ","
+		+ quotesql("2") + ","
+		+ quotesql("2") + ","
+		+ quotesql("2") + ","
+		+ quotesql("1") + ");");
+	rc = sqlite3_exec(db, sql.c_str(), NULL, 0, &err);
+
+	if (rc != SQLITE_OK) {
+		std::cout << "err: " << err;
+	}
+}
