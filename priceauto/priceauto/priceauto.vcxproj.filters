@@ -16,6 +16,15 @@
     <Filter Include="Source Files\sqlite3">
       <UniqueIdentifier>{36851596-cfe8-4d4d-91ab-5900ed422c74}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\DBclass">
+      <UniqueIdentifier>{ea285d23-49c5-41b0-a5d2-e5bb3a317d19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\structs">
+      <UniqueIdentifier>{26528576-c9c4-4986-a79c-1b91666cfd0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\scrapeClass">
+      <UniqueIdentifier>{d0ae723a-e50e-412a-a3f9-f392dc502e6f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="priceauto.cpp">
@@ -27,10 +36,28 @@
     <ClCompile Include="sqlite3.c">
       <Filter>Source Files\sqlite3</Filter>
     </ClCompile>
+    <ClCompile Include="DBclass.cpp">
+      <Filter>Source Files\DBclass</Filter>
+    </ClCompile>
+    <ClCompile Include="DBclassHelpers.cpp">
+      <Filter>Source Files\DBclass</Filter>
+    </ClCompile>
+    <ClCompile Include="scrapeClass.cpp">
+      <Filter>Source Files\scrapeClass</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="sqlite3.h">
       <Filter>Source Files\sqlite3</Filter>
+    </ClInclude>
+    <ClInclude Include="DBclass.h">
+      <Filter>Source Files\DBclass</Filter>
+    </ClInclude>
+    <ClInclude Include="scrapeClass.h">
+      <Filter>Source Files\scrapeClass</Filter>
+    </ClInclude>
+    <ClInclude Include="symbolSource.h">
+      <Filter>Source Files\structs</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
