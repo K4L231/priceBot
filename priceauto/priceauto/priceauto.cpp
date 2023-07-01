@@ -3,7 +3,6 @@
 #include <string>
 #include "DBclass.h"
 #include "scrapeClass.h"
-#include <cpr/cpr.h>
 
 //int init_scrapeObj(int n, DBclass db, scrapeBinanaceClass** scrapeObj) {
 //	for (int i = 0; i < n; i++) {
@@ -30,10 +29,6 @@ int main() {
 	init_scrapeObjVector(db.symbols.size(), db, scrapeObjVector);
 
 	for (int i = 0; i < n; i++) {
-		scrapeObjVector[i].print();
+		scrapeObjVector[i].scrapeMain();
 	}
-	
-//	std::string symbol = "BTCUSDT";
-//	auto response = cpr::Get(cpr::Url{"https://api.binance.com/api/v3/ticker?symbol=" + symbol + "&windowSize=1m"});
-//	std::cout << response.text << std::endl;
 }
