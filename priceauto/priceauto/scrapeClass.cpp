@@ -21,7 +21,7 @@ void scrapeClass::scrapeMain()
 
 void scrapeClass::scrapeBinance()
 {
-	std::string symbol = "BTCUSDT";
 	auto response = cpr::Get(cpr::Url{"https://api.binance.com/api/v3/ticker?symbol=" + this->symbol + "&windowSize=1m"});
 	std::cout << response.text << std::endl;
 }
+

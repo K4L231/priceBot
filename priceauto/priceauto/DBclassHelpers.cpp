@@ -3,11 +3,14 @@
 #include <string>
 #include "sqlite3.h"
 
-void DBclass::check_rc(int rc)
+int DBclass::check_rc(int rc)
 {
 	if (rc != SQLITE_OK) {
 		std::cout << "err: " << err;
+		return 8;
 	}
+
+	return 0;
 }
 
 std::string DBclass::quotesql(const std::string& s)

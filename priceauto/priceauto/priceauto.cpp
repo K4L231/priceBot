@@ -3,14 +3,8 @@
 #include <string>
 #include "DBclass.h"
 #include "scrapeClass.h"
-
-//int init_scrapeObj(int n, DBclass db, scrapeBinanaceClass** scrapeObj) {
-//	for (int i = 0; i < n; i++) {
-//		scrapeObj[i] = new scrapeBinanaceClass;
-//		scrapeObj[i]->init(db.binanceSymbols[i]);
-//	}
-//	return 0;
-//}
+#include "Windows.h"
+#include <thread>
 
 int init_scrapeObjVector(int n, DBclass db, std::vector<scrapeClass> &scrapeObjVector) {
 	for (int i = 0; i < n; i++) {
@@ -21,6 +15,20 @@ int init_scrapeObjVector(int n, DBclass db, std::vector<scrapeClass> &scrapeObjV
 	return 0;
 }
 
+class thread_obj {
+public:
+	void operator()(int x)
+	{
+		for (int i = 0; i < x; i++)
+			std::cout << "Thread using function"
+			" object as callable\n";
+	}
+};
+
+void square() {
+	std::cout << "test";
+}
+
 int main() {
 	DBclass db;
 	int n = db.symbols.size();
@@ -28,7 +36,15 @@ int main() {
 
 	init_scrapeObjVector(db.symbols.size(), db, scrapeObjVector);
 
-	for (int i = 0; i < n; i++) {
-		scrapeObjVector[i].scrapeMain();
+
+	for (;;) {
+		std::vector<std::thread> threads;
+		for (int i = 0; i < n; i++) {
+			threads.push_back(std::thread(&scrapeClass::scrapeMain, &scrapeObjVector[i]));
+		}
+		for (int i = 0; i < n; i++) {
+			threads[i].join();
+		}
+		Sleep(5000);
 	}
 }

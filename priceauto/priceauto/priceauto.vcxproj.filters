@@ -45,6 +45,9 @@
     <ClCompile Include="scrapeClass.cpp">
       <Filter>Source Files\scrapeClass</Filter>
     </ClCompile>
+    <ClCompile Include="DBclassInsert.cpp">
+      <Filter>Source Files\DBclass</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="sqlite3.h">

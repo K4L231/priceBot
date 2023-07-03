@@ -8,7 +8,8 @@ class DBclass {
 private:
 	char* err;
 	int rc;
-	void check_rc(int rc);
+	int check_rc(int rc);
+	void insertToSymbols(std::string symbol, std::string source);
 public:
 	sqlite3* db;
 	DBclass();
