@@ -131,6 +131,7 @@
     <ClCompile Include="DBclass.cpp" />
     <ClCompile Include="DBclassHelpers.cpp" />
     <ClCompile Include="DBclassInsert.cpp" />
+    <ClCompile Include="DBclassRetrieve.cpp" />
     <ClCompile Include="priceauto.cpp" />
     <ClCompile Include="scrapeClass.cpp" />
     <ClCompile Include="shell.c" />
