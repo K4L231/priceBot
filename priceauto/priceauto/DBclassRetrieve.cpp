@@ -2,7 +2,7 @@
 
 void DBclass::retrievePriceInfo(std::string symbol, std::string timeframe, std::vector<infoStruct>& priceInfoVector)
 {
-	std::string sqlQuery = "select symbol, change, prcntChange, high, low, last, open, volume, count from " + symbol + timeframe;
+	std::string sqlQuery = "select symbol, change, prcntChange, high, low, last, open, volume, quoteVolume, openTime from " + symbol + timeframe;
 	sqlite3_stmt* stmt;
 	sqlite3_prepare_v2(db, sqlQuery.c_str(), -1, &stmt, 0);
 	while (sqlite3_step(stmt) != SQLITE_DONE) {
@@ -15,14 +15,15 @@ void DBclass::retrievePriceInfo(std::string symbol, std::string timeframe, std::
 		tempInfoStruct.last        = sqlite3_column_double(stmt, 5);
 		tempInfoStruct.open        = sqlite3_column_double(stmt, 6);
 		tempInfoStruct.volume      = sqlite3_column_double(stmt, 7); 
-		tempInfoStruct.count       = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 8));
+		tempInfoStruct.quoteVolume = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 8));
+		tempInfoStruct.openTime    = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 9));
 		priceInfoVector.push_back(tempInfoStruct);
 	}
 	this->cleanUpData(priceInfoVector, symbol, timeframe);
 }
 
 void DBclass::cleanUpData(std::vector<infoStruct>& priceInfoVector, std::string symbol, std::string timeframe) {
-	int maxNumberOfRows = 15;
+	int maxNumberOfRows = 20000;
 	if (priceInfoVector.size() > maxNumberOfRows) {
 		for (int i = 0; i < priceInfoVector.size() - maxNumberOfRows; i++) {
 			infoStruct item = priceInfoVector[i];
@@ -35,7 +36,8 @@ void DBclass::cleanUpData(std::vector<infoStruct>& priceInfoVector, std::string 
 				" AND last = " + std::to_string(item.last) +
 				" AND open = " + std::to_string(item.open) +
 				" AND volume = " + std::to_string(item.volume) +
-				" AND count = " + "\'" + item.count + "\'"
+				" AND quoteVolume = " + "\'" + item.quoteVolume + "\'" +
+				" AND openTime = " + "\'" + item.openTime + "\'"
 				+ ";";
 			this->rc = sqlite3_exec(db, deleteQuery.c_str(), nullptr, nullptr, &this->err);
 			this->check_rc(this->rc);

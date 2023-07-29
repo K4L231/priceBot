@@ -25,6 +25,9 @@
     <Filter Include="Source Files\scrapeClass">
       <UniqueIdentifier>{d0ae723a-e50e-412a-a3f9-f392dc502e6f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\timeClass">
+      <UniqueIdentifier>{8ea9df3b-0a96-4398-b517-a09eec6b7c93}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="priceauto.cpp">
@@ -51,6 +54,9 @@
     <ClCompile Include="DBclassRetrieve.cpp">
       <Filter>Source Files\DBclass</Filter>
     </ClCompile>
+    <ClCompile Include="timeClass.cpp">
+      <Filter>Source Files\timeClass</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="sqlite3.h">
@@ -64,6 +70,9 @@
     </ClInclude>
     <ClInclude Include="symbolSource.h">
       <Filter>Source Files\structs</Filter>
+    </ClInclude>
+    <ClInclude Include="timeClass.h">
+      <Filter>Source Files\timeClass</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

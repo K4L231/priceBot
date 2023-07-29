@@ -24,8 +24,6 @@ void scrapeClass::scrapeMain(std::promise<infoStruct>&& p)
 void scrapeClass::scrapeBinance()
 {
 	auto response = cpr::Get(cpr::Url{"https://api.binance.com/api/v3/ticker?symbol=" + this->symbol + "&windowSize=1m"});
-//	std::cout << response.text << std::endl;
-//	std::cout << typeid(response.text).name() << std::endl;
 
 	nlohmann::json j_complete = nlohmann::json::parse(response.text);
 	this->priceInfo.symbol = this->symbol;
@@ -36,7 +34,9 @@ void scrapeClass::scrapeBinance()
 	this->priceInfo.last   = std::stod(j_complete["lastPrice"].get<std::string>());
 	this->priceInfo.open   = std::stod(j_complete["openPrice"].get<std::string>());
 	this->priceInfo.volume = std::stod(j_complete["volume"].get<std::string>());
-	this->priceInfo.count  = j_complete["quoteVolume"].get<std::string>();
+	this->priceInfo.quoteVolume = j_complete["quoteVolume"].get<std::string>();
+	this->priceInfo.openTime = std::to_string(j_complete["openTime"].get<long long>());
+
 }
 
 

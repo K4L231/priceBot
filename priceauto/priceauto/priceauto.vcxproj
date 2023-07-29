@@ -136,12 +136,14 @@
     <ClCompile Include="scrapeClass.cpp" />
     <ClCompile Include="shell.c" />
     <ClCompile Include="sqlite3.c" />
+    <ClCompile Include="timeClass.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DBclass.h" />
     <ClInclude Include="scrapeClass.h" />
     <ClInclude Include="sqlite3.h" />
     <ClInclude Include="symbolSource.h" />
+    <ClInclude Include="timeClass.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

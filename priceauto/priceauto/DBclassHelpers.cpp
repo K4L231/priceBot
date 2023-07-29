@@ -6,7 +6,7 @@
 int DBclass::check_rc(int rc)
 {
 	if (rc != SQLITE_OK) {
-		std::cout << "err: " << err;
+		std::cout << "err: " << err << std::endl;
 		return 8;
 	}
 

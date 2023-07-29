@@ -12,7 +12,8 @@ struct infoStruct {
 	double last;
 	double open;
 	double volume;
-	std::string count;
+	std::string quoteVolume;
+	std::string openTime;
 };
 
 #endif // !SYMBOLSOURCE_H
