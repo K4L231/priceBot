@@ -49,8 +49,32 @@ int main() {
 		for (int i = 0; i < n; i++) {
 			ScrapeThreads[i].join();
 			auto fval = futureResults[i].get();
-			fval.openTime = std::to_string(localTimeInfo.tm_year) + std::to_string(localTimeInfo.tm_mon) + std::to_string(localTimeInfo.tm_mday) + std::to_string(localTimeInfo.tm_hour) + std::to_string(tempMinute);
-			db.insertInterval(fval, n, "interval");
+			fval.openTime = std::to_string(localTimeInfo.tm_year);
+			if (std::to_string(localTimeInfo.tm_mon).size() == 1) {
+				fval.openTime = fval.openTime + "0" + std::to_string(localTimeInfo.tm_mon);
+			}
+			else {
+				fval.openTime = fval.openTime + std::to_string(localTimeInfo.tm_mon);
+			}
+			if (std::to_string(localTimeInfo.tm_mday).size() == 1) {
+				fval.openTime = fval.openTime + "0" + std::to_string(localTimeInfo.tm_mday);
+			}
+			else {
+				fval.openTime = fval.openTime + std::to_string(localTimeInfo.tm_mday);
+			}
+			if (std::to_string(localTimeInfo.tm_hour).size() == 1) {
+				fval.openTime = fval.openTime + "0" + std::to_string(localTimeInfo.tm_hour);
+			}
+			else {
+				fval.openTime = fval.openTime + std::to_string(localTimeInfo.tm_hour);
+			}
+			if (std::to_string(tempMinute).size() == 1) {
+				fval.openTime = fval.openTime + "0" + std::to_string(tempMinute);
+			}
+			else {
+				fval.openTime = fval.openTime + std::to_string(tempMinute);
+			}
+			db.insertInterval(fval, n, "interval", fval.source);
 		}
 
 
@@ -58,33 +82,38 @@ int main() {
 			minute = tempMinute;
 			std::vector<std::thread> dbIntervalThreads;
 			for (int i = 0; i < n; i++) {
-				dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "1min", db.symbols[i].symbol, "interval", 60000 / sleep));
+//				dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "1min", db.symbols[i].symbol, "interval", 60000 / sleep, false, db.symbols[i].source));
+				db.insertTimeframe("1min", db.symbols[i].symbol, "interval", 60000 / sleep, false, db.symbols[i].source);
 			}
 			if (minute % 3 == 0) {
 				for (int i = 0; i < n; i++) {
-					dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "3min", db.symbols[i].symbol, "interval", (60000 * 3) / sleep));
+//					dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "3min", db.symbols[i].symbol, "interval", (60000 * 3) / sleep, false, db.symbols[i].source));
+					db.insertTimeframe("3min", db.symbols[i].symbol, "interval", (60000 * 3) / sleep, false, db.symbols[i].source);
 				}
 			}
 			if (minute % 5 == 0) {
 				for (int i = 0; i < n; i++) {
-					dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "5min", db.symbols[i].symbol, "interval", (60000 * 5) / sleep));
+//					dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "5min", db.symbols[i].symbol, "interval", (60000 * 5) / sleep, false, db.symbols[i].source));
+					db.insertTimeframe("5min", db.symbols[i].symbol, "interval", (60000 * 5) / sleep, false, db.symbols[i].source);
 				}
 			}
 			if (minute % 15 == 0) {
 				for (int i = 0; i < n; i++) {
-					dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "15min", db.symbols[i].symbol, "interval", (60000 * 15) / sleep));
+//					dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "15min", db.symbols[i].symbol, "interval", (60000 * 15) / sleep, false, db.symbols[i].source));
+					db.insertTimeframe("15min", db.symbols[i].symbol, "interval", (60000 * 15) / sleep, false, db.symbols[i].source);
 				}
 			}
 			if (minute % 30 == 0) {
 				for (int i = 0; i < n; i++) {
-					dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "30min", db.symbols[i].symbol, "interval", (60000 * 30) / sleep));
+//					dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "30min", db.symbols[i].symbol, "interval", (60000 * 30) / sleep, false, db.symbols[i].source));
+					db.insertTimeframe("30min", db.symbols[i].symbol, "interval", (60000 * 30) / sleep, false, db.symbols[i].source);
 				}
 			}
 
 
-			for (int i = 0; i < dbIntervalThreads.size(); i++) {
-				dbIntervalThreads[i].join();
-			}
+//			for (int i = 0; i < dbIntervalThreads.size(); i++) {
+//				dbIntervalThreads[i].join();
+//			}
 		}
 
 

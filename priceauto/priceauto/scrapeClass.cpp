@@ -36,6 +36,7 @@ void scrapeClass::scrapeBinance()
 	this->priceInfo.volume = std::stod(j_complete["volume"].get<std::string>());
 	this->priceInfo.quoteVolume = j_complete["quoteVolume"].get<std::string>();
 	this->priceInfo.openTime = std::to_string(j_complete["openTime"].get<long long>());
+	this->priceInfo.source = "binance";
 
 }
 
