@@ -1,3 +1,4 @@
+#define _CRTDBG_MAP_ALLOC
 #include <iostream>
 #include "sqlite3.h"
 #include <string>
@@ -9,6 +10,7 @@
 #include <future>
 #include "symbolSource.h"
 #include <chrono>
+#include <crtdbg.h>
 
 int init_scrapeObjVector(int n, DBclass db, std::vector<scrapeClass> &scrapeObjVector) {
 	for (int i = 0; i < n; i++) {
@@ -18,9 +20,16 @@ int init_scrapeObjVector(int n, DBclass db, std::vector<scrapeClass> &scrapeObjV
 	}
 	return 0;
 }
-
+void checkCountCount(int &countCount, int &count, int remain) {
+//	std::cout << "count :" << count << " countCount: " << countCount << std::endl;
+	if (countCount % remain == 0) {
+		countCount = 0;
+		count = 0;
+	}
+}
 
 int main() {
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	timeClass getTime;
 	DBclass db;
 	int n = db.symbols.size();
@@ -29,9 +38,18 @@ int main() {
 
 	int sleep = 5000;
 	int minute = -1;
-
-	for (;;) {
-		time_t currentTime = time(nullptr);
+	int minuteCount = 0;
+	int minute3Count = 0;
+	int minute3CountCount = 0;
+	int minute5Count = 0;
+	int minute5CountCount = 0;
+	int minute15Count = 0;
+	int minute15CountCount = 0;
+	int minute30Count = 0;
+	int minute30CountCount = 0;
+//	for (;;) {
+	for (int i = 0; i < 1; i++) {
+		time_t currentTime = std::time(nullptr);
 		struct tm localTimeInfo;
 		localtime_s(&localTimeInfo, &currentTime);
 		int tempMinute = localTimeInfo.tm_min;
@@ -80,7 +98,7 @@ int main() {
 
 		if (tempMinute != minute) {
 			minute = tempMinute;
-			std::vector<std::thread> dbIntervalThreads;
+//			std::vector<std::thread> dbIntervalThreads;
 			for (int i = 0; i < n; i++) {
 //				dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "1min", db.symbols[i].symbol, "interval", 60000 / sleep, false, db.symbols[i].source));
 				db.insertTimeframe("1min", db.symbols[i].symbol, "interval", 60000 / sleep, false, db.symbols[i].source);
@@ -109,15 +127,37 @@ int main() {
 					db.insertTimeframe("30min", db.symbols[i].symbol, "interval", (60000 * 30) / sleep, false, db.symbols[i].source);
 				}
 			}
-
-
 //			for (int i = 0; i < dbIntervalThreads.size(); i++) {
 //				dbIntervalThreads[i].join();
 //			}
+			minuteCount = 0;
+
+			minute3CountCount++;
+			minute5CountCount++;
+			minute15CountCount++;
+			minute30CountCount++;
+
+			checkCountCount(minute3CountCount, minute3Count, 3);
+			checkCountCount(minute5CountCount, minute5Count, 5);
+			checkCountCount(minute15CountCount, minute15Count, 15);
+			checkCountCount(minute30CountCount, minute30Count, 30);
+		}
+		else {
+			for (int i = 0; i < n; i++) {
+				db.insertTimeframe("1min", db.symbols[i].symbol, "interval", minuteCount, true, db.symbols[i].source);
+				db.insertTimeframe("3min", db.symbols[i].symbol, "interval", minute3Count, true, db.symbols[i].source);
+				db.insertTimeframe("5min", db.symbols[i].symbol, "interval", minute5Count, true, db.symbols[i].source);
+				db.insertTimeframe("15min", db.symbols[i].symbol, "interval", minute15Count, true, db.symbols[i].source);
+				db.insertTimeframe("30min", db.symbols[i].symbol, "interval", minute30Count, true, db.symbols[i].source);
+			}
 		}
 
-
-
+		std::cout << "count :" << minute3Count << " countCount: " << minute3CountCount << std::endl;
+		minuteCount++;
+		minute3Count++;
+		minute5Count++;
+		minute15Count++;
+		minute30Count++;
 
 
 
@@ -126,6 +166,10 @@ int main() {
 		int time = (end.time_since_epoch().count() - start.time_since_epoch().count()) / 1000000;
 		std::cout << "Took miliseconds to execute: " << time << std::endl;
 		if (sleep - time > 0) Sleep(sleep - time);
-		
+
 	}
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	_CrtDumpMemoryLeaks();
+
+	return 0;
 }

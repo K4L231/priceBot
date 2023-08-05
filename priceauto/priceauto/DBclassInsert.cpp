@@ -14,8 +14,8 @@ void DBclass::insertTimeframe(std::string timeframe, std::string symbol, std::st
 	if (numberOfRows < priceInfoVector.size()) {
 		infoStruct tempPriceStruct;
 		tempPriceStruct.symbol = priceInfoVector[0].symbol;
-		tempPriceStruct.change = priceInfoVector[priceInfoVector.size() - 1].last - priceInfoVector[priceInfoVector.size() - numberOfRows - 1].open;
-		tempPriceStruct.prcntChange = (tempPriceStruct.change * 100) / priceInfoVector[priceInfoVector.size() - 1].last;
+//		tempPriceStruct.change = priceInfoVector[priceInfoVector.size() - 1].last - priceInfoVector[priceInfoVector.size() - numberOfRows - 1].open;
+//		tempPriceStruct.prcntChange = (tempPriceStruct.change * 100) / priceInfoVector[priceInfoVector.size() - 1].last;
 		tempPriceStruct.low = 99999999999999999;
 		tempPriceStruct.volume = 0;
 		long long tempQuoteVolume = 0;
@@ -26,27 +26,23 @@ void DBclass::insertTimeframe(std::string timeframe, std::string symbol, std::st
 			if (priceInfoVector[i].low < tempPriceStruct.low) {
 				tempPriceStruct.low = priceInfoVector[i].low;
 			}
+		}
 
-			if (priceInfoVector[i].openTime != priceInfoVector[i + 1].openTime) {
-				tempPriceStruct.volume = tempPriceStruct.volume + priceInfoVector[i].volume;
-				tempQuoteVolume = tempQuoteVolume + std::stoll(priceInfoVector[i].quoteVolume);
+		tempPriceStruct.volume = priceInfoVector[priceInfoVector.size() - 1].volume;
+		tempQuoteVolume = std::stoll(priceInfoVector[priceInfoVector.size() - 1].quoteVolume);
+		for (int i = priceInfoVector.size() - 1; i > priceInfoVector.size() - numberOfRows; i--) {
+			if (priceInfoVector[i].openTime != priceInfoVector[i - 1].openTime) {
+				tempPriceStruct.volume = tempPriceStruct.volume + priceInfoVector[i - 1].volume;
+				tempQuoteVolume = tempQuoteVolume + std::stoll(priceInfoVector[i - 1].quoteVolume);
 			}
 		}
+
 		tempPriceStruct.last = priceInfoVector[priceInfoVector.size() - 1].last;
 		tempPriceStruct.quoteVolume = std::to_string(tempQuoteVolume);
-		tempPriceStruct.open = priceInfoVector[priceInfoVector.size() - numberOfRows - 1].open;
+		tempPriceStruct.open = priceInfoVector[priceInfoVector.size() - numberOfRows - 1].last;
 		tempPriceStruct.openTime = priceInfoVector[priceInfoVector.size() - numberOfRows - 1].openTime;
-//		std::cout << " symbol: " << tempPriceStruct.symbol << std::endl;
-//		std::cout << "------------ timeframe: " << timeframe << std::endl;
-//		std::cout << " change: " << tempPriceStruct.change << std::endl;
-//		std::cout << " prcntChange: " << tempPriceStruct.prcntChange << std::endl;
-//		std::cout << " high: " << tempPriceStruct.high << std::endl;
-//		std::cout << " low: " << tempPriceStruct.low << std::endl;
-//		std::cout << " last: " << tempPriceStruct.last << std::endl;
-//		std::cout << " volume: " << tempPriceStruct.volume << std::endl;
-//		std::cout << " quote volume: " << tempPriceStruct.quoteVolume << std::endl;
-//		std::cout << " open: " << tempPriceStruct.open << std::endl;
-//		std::cout << " openTime: " << tempPriceStruct.openTime << std::endl;
+		tempPriceStruct.change = tempPriceStruct.last - tempPriceStruct.open;
+		tempPriceStruct.prcntChange = (tempPriceStruct.change * 100) / tempPriceStruct.last;
 
 		if (temp == false && timeframe != "interval") {
 			this->deleteLastRow(tempPriceStruct.symbol, timeframe, source);
@@ -54,19 +50,21 @@ void DBclass::insertTimeframe(std::string timeframe, std::string symbol, std::st
 
 			this->insertInterval(tempPriceStruct, this->checked, timeframe, source);
 
-			infoStruct delInfoStruct;
-			delInfoStruct.change = 0;
-			delInfoStruct.high = 0;
-			delInfoStruct.last = 0;
-			delInfoStruct.low = 0;
-			delInfoStruct.open = 0;
-			delInfoStruct.openTime = std::to_string(std::stoll(tempPriceStruct.openTime) + 1);
-			delInfoStruct.prcntChange = 0;
-			delInfoStruct.quoteVolume = "0";
-			delInfoStruct.source = "binance";
-			delInfoStruct.symbol = "BTCUSDT";
-			delInfoStruct.volume = 0;
-			this->insertInterval(delInfoStruct, this->checked, timeframe, source);
+			tempPriceStruct.openTime = std::to_string(std::stoll(tempPriceStruct.openTime) + 1);
+			tempPriceStruct.change = 0;
+			tempPriceStruct.prcntChange = 0;
+			tempPriceStruct.high = tempPriceStruct.last;
+			tempPriceStruct.low = tempPriceStruct.last;
+			tempPriceStruct.open = tempPriceStruct.last;
+			tempPriceStruct.volume = 0;
+			tempPriceStruct.quoteVolume = "0";
+			this->insertInterval(tempPriceStruct, this->checked, timeframe, source);
+		}
+		else if (temp == true && timeframe != "interval") {
+//			tempPriceStruct.quoteVolume = priceInfoVector[priceInfoVector.size() - 1].quoteVolume;
+//			tempPriceStruct.volume = priceInfoVector[priceInfoVector.size() - 1].volume;
+			this->deleteLastRow(tempPriceStruct.symbol, timeframe, source);
+			this->insertInterval(tempPriceStruct, this->checked, timeframe, source);
 		}
 	}
 
