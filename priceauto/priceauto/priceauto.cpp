@@ -5,7 +5,7 @@
 #include "DBclass.h"
 #include "scrapeClass.h"
 #include "timeClass.h"
-#include "Windows.h"
+//#include "Windows.h"
 #include <thread>
 #include <future>
 #include "symbolSource.h"
