@@ -21,7 +21,6 @@ int init_scrapeObjVector(int n, DBclass db, std::vector<scrapeClass> &scrapeObjV
 	return 0;
 }
 void checkCountCount(int &countCount, int &count, int remain) {
-//	std::cout << "count :" << count << " countCount: " << countCount << std::endl;
 	if (countCount % remain == 0) {
 		countCount = 0;
 		count = 0;
@@ -29,7 +28,6 @@ void checkCountCount(int &countCount, int &count, int remain) {
 }
 
 int main() {
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	timeClass getTime;
 	DBclass db;
 	int n = db.symbols.size();
@@ -47,8 +45,8 @@ int main() {
 	int minute15CountCount = 0;
 	int minute30Count = 0;
 	int minute30CountCount = 0;
-//	for (;;) {
-	for (int i = 0; i < 1; i++) {
+
+	for (;;) {
 		time_t currentTime = std::time(nullptr);
 		struct tm localTimeInfo;
 		localtime_s(&localTimeInfo, &currentTime);
@@ -64,6 +62,7 @@ int main() {
 			futureResults.push_back(promise.get_future());
 			ScrapeThreads.push_back(std::thread(&scrapeClass::scrapeMain, &scrapeObjVector[i], std::move(promise)));
 		}
+
 		for (int i = 0; i < n; i++) {
 			ScrapeThreads[i].join();
 			auto fval = futureResults[i].get();
@@ -92,39 +91,39 @@ int main() {
 			else {
 				fval.openTime = fval.openTime + std::to_string(tempMinute);
 			}
-			db.insertInterval(fval, n, "interval", fval.source);
+//			db.insertInterval(fval, n, "interval", fval.source);
 		}
 
 
 		if (tempMinute != minute) {
 			minute = tempMinute;
-//			std::vector<std::thread> dbIntervalThreads;
+			std::vector<std::thread> dbIntervalThreads;
 			for (int i = 0; i < n; i++) {
 //				dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "1min", db.symbols[i].symbol, "interval", 60000 / sleep, false, db.symbols[i].source));
-				db.insertTimeframe("1min", db.symbols[i].symbol, "interval", 60000 / sleep, false, db.symbols[i].source);
+//				db.insertTimeframe("1min", db.symbols[i].symbol, "interval", 60000 / sleep, false, db.symbols[i].source);
 			}
 			if (minute % 3 == 0) {
 				for (int i = 0; i < n; i++) {
 //					dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "3min", db.symbols[i].symbol, "interval", (60000 * 3) / sleep, false, db.symbols[i].source));
-					db.insertTimeframe("3min", db.symbols[i].symbol, "interval", (60000 * 3) / sleep, false, db.symbols[i].source);
+//					db.insertTimeframe("3min", db.symbols[i].symbol, "interval", (60000 * 3) / sleep, false, db.symbols[i].source);
 				}
 			}
 			if (minute % 5 == 0) {
 				for (int i = 0; i < n; i++) {
 //					dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "5min", db.symbols[i].symbol, "interval", (60000 * 5) / sleep, false, db.symbols[i].source));
-					db.insertTimeframe("5min", db.symbols[i].symbol, "interval", (60000 * 5) / sleep, false, db.symbols[i].source);
+//					db.insertTimeframe("5min", db.symbols[i].symbol, "interval", (60000 * 5) / sleep, false, db.symbols[i].source);
 				}
 			}
 			if (minute % 15 == 0) {
 				for (int i = 0; i < n; i++) {
 //					dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "15min", db.symbols[i].symbol, "interval", (60000 * 15) / sleep, false, db.symbols[i].source));
-					db.insertTimeframe("15min", db.symbols[i].symbol, "interval", (60000 * 15) / sleep, false, db.symbols[i].source);
+//					db.insertTimeframe("15min", db.symbols[i].symbol, "interval", (60000 * 15) / sleep, false, db.symbols[i].source);
 				}
 			}
 			if (minute % 30 == 0) {
 				for (int i = 0; i < n; i++) {
 //					dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "30min", db.symbols[i].symbol, "interval", (60000 * 30) / sleep, false, db.symbols[i].source));
-					db.insertTimeframe("30min", db.symbols[i].symbol, "interval", (60000 * 30) / sleep, false, db.symbols[i].source);
+//					db.insertTimeframe("30min", db.symbols[i].symbol, "interval", (60000 * 30) / sleep, false, db.symbols[i].source);
 				}
 			}
 //			for (int i = 0; i < dbIntervalThreads.size(); i++) {
@@ -142,17 +141,16 @@ int main() {
 			checkCountCount(minute15CountCount, minute15Count, 15);
 			checkCountCount(minute30CountCount, minute30Count, 30);
 		}
-		else {
-			for (int i = 0; i < n; i++) {
-				db.insertTimeframe("1min", db.symbols[i].symbol, "interval", minuteCount, true, db.symbols[i].source);
-				db.insertTimeframe("3min", db.symbols[i].symbol, "interval", minute3Count, true, db.symbols[i].source);
-				db.insertTimeframe("5min", db.symbols[i].symbol, "interval", minute5Count, true, db.symbols[i].source);
-				db.insertTimeframe("15min", db.symbols[i].symbol, "interval", minute15Count, true, db.symbols[i].source);
-				db.insertTimeframe("30min", db.symbols[i].symbol, "interval", minute30Count, true, db.symbols[i].source);
-			}
-		}
-
-		std::cout << "count :" << minute3Count << " countCount: " << minute3CountCount << std::endl;
+//		else {
+//			for (int i = 0; i < n; i++) {
+////				db.insertTimeframe("1min", db.symbols[i].symbol, "interval", minuteCount, true, db.symbols[i].source);
+////				db.insertTimeframe("3min", db.symbols[i].symbol, "interval", minute3Count, true, db.symbols[i].source);
+////				db.insertTimeframe("5min", db.symbols[i].symbol, "interval", minute5Count, true, db.symbols[i].source);
+////				db.insertTimeframe("15min", db.symbols[i].symbol, "interval", minute15Count, true, db.symbols[i].source);
+////				db.insertTimeframe("30min", db.symbols[i].symbol, "interval", minute30Count, true, db.symbols[i].source);
+//			}
+//		}
+//
 		minuteCount++;
 		minute3Count++;
 		minute5Count++;
@@ -164,12 +162,12 @@ int main() {
 
 		auto end = std::chrono::high_resolution_clock::now();
 		int time = (end.time_since_epoch().count() - start.time_since_epoch().count()) / 1000000;
-		std::cout << "Took miliseconds to execute: " << time << std::endl;
-		if (sleep - time > 0) Sleep(sleep - time);
-
+//		std::cout << "Took miliseconds to execute: " << time << std::endl;
+//		if (sleep - time > 0) Sleep(sleep - time);
+//
 	}
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
-	_CrtDumpMemoryLeaks();
+
+//	_CrtDumpMemoryLeaks();
 
 	return 0;
 }

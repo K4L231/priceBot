@@ -7,8 +7,11 @@
 
 DBclass::DBclass()
 {
-	sqlite3_open("myDb.db", &db);
-	sqlite3_open("DBsymbol.db", &dbSmybol);
+	int rc = sqlite3_open("myDb.db", &db);
+	this->check_rc(rc);
+
+	rc = sqlite3_open("DBsymbol.db", &dbSmybol);
+	this->check_rc(rc);
 	this->getSymbols();
 }
 

@@ -3,10 +3,10 @@
 
 void DBclass::insertTimeframe(std::string timeframe, std::string symbol, std::string smallerTimeframe, int numberOfRows, bool temp, std::string source)
 {
-//	std::cout << timeframe << " " << symbol << std::endl;
+	std::cout << timeframe << " " << symbol << std::endl;
 	const std::string create_table = "CREATE TABLE IF NOT EXISTS " + symbol + timeframe + source + " (symbol text, change numeric, prcntChange numeric, high numeric, low numeric, last numeric, open numeric, volume numeric, quoteVolume text, openTime string)";
-	this->rc = sqlite3_exec(db, create_table.c_str(), NULL, NULL, &this->err);
-	this->check_rc(this->rc);
+	int rc = sqlite3_exec(db, create_table.c_str(), NULL, NULL, &this->err);
+	this->check_rc(rc);
 
 	std::vector <infoStruct> priceInfoVector;
 	this->retrievePriceInfo(symbol, smallerTimeframe, priceInfoVector, source);
@@ -75,8 +75,8 @@ void DBclass::insertInterval(infoStruct priceInfo, int n, std::string timeframe,
 	if (this->checked < n) {
 		this - checked++;
 		const std::string create_table = "CREATE TABLE IF NOT EXISTS " + priceInfo.symbol + timeframe + source + " (symbol text, change numeric, prcntChange numeric, high numeric, low numeric, last numeric, open numeric, volume numeric, quoteVolume text, openTime string)";
-		this->rc = sqlite3_exec(db, create_table.c_str(), NULL, NULL, &this->err);
-		this->check_rc(this->rc);
+		int rc = sqlite3_exec(db, create_table.c_str(), NULL, NULL, &this->err);
+		this->check_rc(rc);
 	}
 	std::string sql("INSERT INTO " + priceInfo.symbol + timeframe + source + " (symbol, change, prcntChange, high, low, last, open, volume, quoteVolume, openTime) VALUES ("
 		+ this->quotesql(priceInfo.symbol) + ","
@@ -90,8 +90,8 @@ void DBclass::insertInterval(infoStruct priceInfo, int n, std::string timeframe,
 		+ this->quotesql(priceInfo.quoteVolume) + ","
 		+ this->quotesql(priceInfo.openTime) + ");");
 
-	this->rc = sqlite3_exec(db, sql.c_str(), NULL, 0, &this->err);
-	this->check_rc(this->rc);
+	int rc = sqlite3_exec(db, sql.c_str(), NULL, 0, &this->err);
+	this->check_rc(rc);
 }
 
 void DBclass::insertToSymbols(std::string symbol, std::string source)
