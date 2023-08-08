@@ -10,7 +10,7 @@
 #include <future>
 #include "symbolSource.h"
 #include <chrono>
-#include <crtdbg.h>
+//#include <crtdbg.h>
 
 int init_scrapeObjVector(int n, DBclass db, std::vector<scrapeClass> &scrapeObjVector) {
 	for (int i = 0; i < n; i++) {
