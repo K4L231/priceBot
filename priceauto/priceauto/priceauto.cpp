@@ -49,8 +49,8 @@ int main() {
 	for (;;) {
 		time_t currentTime = std::time(nullptr);
 		struct tm localTimeInfo;
-		localtime_s(&localTimeInfo, &currentTime);
-		int tempMinute = localTimeInfo.tm_min;
+//		localtime_s(&localTimeInfo, &currentTime);
+//		int tempMinute = localTimeInfo.tm_min;
 
 
 		auto start = std::chrono::high_resolution_clock::now();
@@ -66,37 +66,37 @@ int main() {
 		for (int i = 0; i < n; i++) {
 			ScrapeThreads[i].join();
 			auto fval = futureResults[i].get();
-			fval.openTime = std::to_string(localTimeInfo.tm_year);
-			if (std::to_string(localTimeInfo.tm_mon).size() == 1) {
-				fval.openTime = fval.openTime + "0" + std::to_string(localTimeInfo.tm_mon);
-			}
-			else {
-				fval.openTime = fval.openTime + std::to_string(localTimeInfo.tm_mon);
-			}
-			if (std::to_string(localTimeInfo.tm_mday).size() == 1) {
-				fval.openTime = fval.openTime + "0" + std::to_string(localTimeInfo.tm_mday);
-			}
-			else {
-				fval.openTime = fval.openTime + std::to_string(localTimeInfo.tm_mday);
-			}
-			if (std::to_string(localTimeInfo.tm_hour).size() == 1) {
-				fval.openTime = fval.openTime + "0" + std::to_string(localTimeInfo.tm_hour);
-			}
-			else {
-				fval.openTime = fval.openTime + std::to_string(localTimeInfo.tm_hour);
-			}
-			if (std::to_string(tempMinute).size() == 1) {
-				fval.openTime = fval.openTime + "0" + std::to_string(tempMinute);
-			}
-			else {
-				fval.openTime = fval.openTime + std::to_string(tempMinute);
-			}
+//			fval.openTime = std::to_string(localTimeInfo.tm_year);
+//			if (std::to_string(localTimeInfo.tm_mon).size() == 1) {
+//				fval.openTime = fval.openTime + "0" + std::to_string(localTimeInfo.tm_mon);
+//			}
+//			else {
+//				fval.openTime = fval.openTime + std::to_string(localTimeInfo.tm_mon);
+//			}
+//			if (std::to_string(localTimeInfo.tm_mday).size() == 1) {
+//				fval.openTime = fval.openTime + "0" + std::to_string(localTimeInfo.tm_mday);
+//			}
+//			else {
+//				fval.openTime = fval.openTime + std::to_string(localTimeInfo.tm_mday);
+//			}
+//			if (std::to_string(localTimeInfo.tm_hour).size() == 1) {
+//				fval.openTime = fval.openTime + "0" + std::to_string(localTimeInfo.tm_hour);
+//			}
+//			else {
+//				fval.openTime = fval.openTime + std::to_string(localTimeInfo.tm_hour);
+//			}
+//			if (std::to_string(tempMinute).size() == 1) {
+//				fval.openTime = fval.openTime + "0" + std::to_string(tempMinute);
+//			}
+//			else {
+//				fval.openTime = fval.openTime + std::to_string(tempMinute);
+//			}
 //			db.insertInterval(fval, n, "interval", fval.source);
 		}
 
 
-		if (tempMinute != minute) {
-			minute = tempMinute;
+//		if (tempMinute != minute) {
+//			minute = tempMinute;
 			std::vector<std::thread> dbIntervalThreads;
 			for (int i = 0; i < n; i++) {
 //				dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "1min", db.symbols[i].symbol, "interval", 60000 / sleep, false, db.symbols[i].source));
@@ -140,7 +140,7 @@ int main() {
 			checkCountCount(minute5CountCount, minute5Count, 5);
 			checkCountCount(minute15CountCount, minute15Count, 15);
 			checkCountCount(minute30CountCount, minute30Count, 30);
-		}
+//		}
 //		else {
 //			for (int i = 0; i < n; i++) {
 ////				db.insertTimeframe("1min", db.symbols[i].symbol, "interval", minuteCount, true, db.symbols[i].source);
@@ -160,9 +160,10 @@ int main() {
 
 
 
-		auto end = std::chrono::high_resolution_clock::now();
-		int time = (end.time_since_epoch().count() - start.time_since_epoch().count()) / 1000000;
+//		auto end = std::chrono::high_resolution_clock::now();
+//		int time = (end.time_since_epoch().count() - start.time_since_epoch().count()) / 1000000;
 //		std::cout << "Took miliseconds to execute: " << time << std::endl;
+		std::cout << 'done' << std::endl;
 //		if (sleep - time > 0) Sleep(sleep - time);
 //
 	}
