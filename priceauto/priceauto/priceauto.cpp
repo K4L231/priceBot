@@ -1,4 +1,5 @@
 #define _CRTDBG_MAP_ALLOC
+#include <thread>
 #include <iostream>
 #include "sqlite3.h"
 #include <string>
@@ -6,7 +7,6 @@
 #include "scrapeClass.h"
 #include "timeClass.h"
 //#include "Windows.h"
-#include <thread>
 #include <future>
 #include "symbolSource.h"
 #include <chrono>
@@ -163,7 +163,7 @@ int main() {
 //		auto end = std::chrono::high_resolution_clock::now();
 //		int time = (end.time_since_epoch().count() - start.time_since_epoch().count()) / 1000000;
 //		std::cout << "Took miliseconds to execute: " << time << std::endl;
-		std::cout << 'done' << std::endl;
+		std::cout << "done" << std::endl;
 //		if (sleep - time > 0) Sleep(sleep - time);
 //
 	}
