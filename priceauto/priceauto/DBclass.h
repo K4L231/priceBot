@@ -11,7 +11,7 @@ private:
 	int check_rc(int rc);
 	void insertToSymbols(std::string symbol, std::string source);
 	void retrieveSymbols();
-	void retrievePriceInfo(std::string symbol, std::string timeframe, std::vector<infoStruct>& priceInfoVector, std::string source);
+	void retrievePriceInfo(std::string symbol, std::string timeframe, std::vector<infoStruct>& priceInfoVector, std::string source, int numberOfRows);
 	void cleanUpData(std::vector<infoStruct>& priceInfoVector, std::string symbol, std::string timeframe);
 	void deleteLastRow(std::string symbol, std::string timeframe, std::string source);
 	int checked{ 0 };

@@ -14,6 +14,7 @@ struct infoStruct {
 	double volume;
 	std::string quoteVolume;
 	std::string openTime;
+	int responseCode;
 };
 
 #endif // !SYMBOLSOURCE_H
