@@ -25,4 +25,5 @@ public:
 	void getSymbols();
 	std::vector <struct infoStruct> symbols;
 	void insertTimeframe(std::string timeframe, std::string symbol, std::string smallerTimeframe, int numberOfRows, bool temp, std::string source);
+	infoStruct retriveLastRow(infoStruct priceInfo, std::string source);
 };

@@ -1,5 +1,31 @@
 #include "DBclass.h"
+#include "symbolSource.h"
 
+infoStruct DBclass::retriveLastRow(infoStruct priceInfo, std::string source)
+{
+	infoStruct tempInfoStruct;
+	std::string sqlQuery = "select symbol, change, prcntChange, high, low, last, open, volume, quoteVolume, openTime from " + priceInfo.symbol + "interval" + source + " ORDER BY openTime DESC LIMIT 1";
+	sqlite3_stmt* stmt;
+	int rc = sqlite3_prepare_v2(db, sqlQuery.c_str(), -1, &stmt, 0);
+	this->check_rc(rc);
+	if (rc == 0) {
+		while (sqlite3_step(stmt) != SQLITE_DONE) {
+			tempInfoStruct.source = source;
+			tempInfoStruct.symbol = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
+			tempInfoStruct.change = sqlite3_column_double(stmt, 1);
+			tempInfoStruct.prcntChange = sqlite3_column_double(stmt, 2);
+			tempInfoStruct.high = sqlite3_column_double(stmt, 3);
+			tempInfoStruct.low = sqlite3_column_double(stmt, 4);
+			tempInfoStruct.last = sqlite3_column_double(stmt, 5);
+			tempInfoStruct.open = sqlite3_column_double(stmt, 6);
+			tempInfoStruct.volume = sqlite3_column_double(stmt, 7);
+			tempInfoStruct.quoteVolume = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 8));
+			tempInfoStruct.openTime = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 9));
+		}
+	}
+	sqlite3_finalize(stmt);
+	return tempInfoStruct;
+}
 
 void DBclass::deleteLastRow(std::string symbol, std::string timeframe, std::string source)
 {
@@ -103,12 +129,14 @@ void DBclass::cleanUpData(std::vector<infoStruct>& priceInfoVector, std::string 
 void DBclass::retrieveSymbols()
 {
 	sqlite3_stmt* stmt;
-	sqlite3_prepare_v2(dbSmybol, "select symbol, source from symbols", -1, &stmt, 0);
+	sqlite3_prepare_v2(dbSmybol, "select symbol, source, steamhash from symbols", -1, &stmt, 0);
 	while (sqlite3_step(stmt) != SQLITE_DONE) {
 		struct infoStruct tempInfoStruct;
 		tempInfoStruct.symbol = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
 		tempInfoStruct.source = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
+		tempInfoStruct.steamHash = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
 		this->symbols.push_back(tempInfoStruct);
+
 	}
 	sqlite3_finalize(stmt);
 	return;

@@ -4,6 +4,7 @@
 void DBclass::insertTimeframe(std::string timeframe, std::string symbol, std::string smallerTimeframe, int numberOfRows, bool temp, std::string source)
 {
 	symbol.erase(remove(symbol.begin(), symbol.end(), '/'), symbol.end());
+	symbol.erase(remove(symbol.begin(), symbol.end(), '-'), symbol.end());
 //	std::cout << timeframe << " " << symbol << std::endl;
 	const std::string create_table = "CREATE TABLE IF NOT EXISTS " + symbol + timeframe + source + " (symbol text, change numeric, prcntChange numeric, high numeric, low numeric, last numeric, open numeric, volume numeric, quoteVolume text, openTime string)";
 	int rc = sqlite3_exec(db, create_table.c_str(), NULL, NULL, &this->err);
@@ -35,17 +36,22 @@ void DBclass::insertTimeframe(std::string timeframe, std::string symbol, std::st
 
 		tempPriceStruct.volume = priceInfoVector[priceInfoVector.size() - Ioffest].volume;
 		tempQuoteVolume = std::stoll(priceInfoVector[priceInfoVector.size() - Ioffest].quoteVolume);
-
+		int openTimeChangeCount = 1;
 		for (int i = priceInfoVector.size() - Ioffest; i > priceInfoVector.size() - numberOfRows; i--) {
 			if (priceInfoVector[i].openTime != priceInfoVector[i - 1].openTime) {
+				openTimeChangeCount++;
 				tempPriceStruct.volume = tempPriceStruct.volume + priceInfoVector[i - 1].volume;
 				tempQuoteVolume = tempQuoteVolume + std::stoll(priceInfoVector[i - 1].quoteVolume);
 			}
 		}
 
+		if (priceInfoVector[0].source == "steam") {
+			tempPriceStruct.volume = tempPriceStruct.volume / openTimeChangeCount;
+		}
+
 		tempPriceStruct.last = priceInfoVector[priceInfoVector.size() - Ioffest].last;
 		tempPriceStruct.quoteVolume = std::to_string(tempQuoteVolume);
-		tempPriceStruct.open = priceInfoVector[priceInfoVector.size() - numberOfRows - 1].last;
+		tempPriceStruct.open = priceInfoVector[priceInfoVector.size() - numberOfRows].last;
 		tempPriceStruct.openTime = priceInfoVector[priceInfoVector.size() - numberOfRows - 1].openTime;
 		tempPriceStruct.change = tempPriceStruct.last - tempPriceStruct.open;
 		tempPriceStruct.prcntChange = (tempPriceStruct.change * 100) / tempPriceStruct.last;
@@ -67,9 +73,8 @@ void DBclass::insertTimeframe(std::string timeframe, std::string symbol, std::st
 			this->insertInterval(tempPriceStruct, this->checked, timeframe, source);
 		}
 		else if (temp == true && timeframe != "interval") {
-//			tempPriceStruct.quoteVolume = priceInfoVector[priceInfoVector.size() - 1].quoteVolume;
-//			tempPriceStruct.volume = priceInfoVector[priceInfoVector.size() - 1].volume;
 			this->deleteLastRow(tempPriceStruct.symbol, timeframe, source);
+
 			this->insertInterval(tempPriceStruct, this->checked, timeframe, source);
 		}
 	}
@@ -78,7 +83,8 @@ void DBclass::insertTimeframe(std::string timeframe, std::string symbol, std::st
 
 void DBclass::insertInterval(infoStruct priceInfo, int n, std::string timeframe, std::string source)
 {
-
+	priceInfo.symbol.erase(remove(priceInfo.symbol.begin(), priceInfo.symbol.end(), '/'), priceInfo.symbol.end());
+	priceInfo.symbol.erase(remove(priceInfo.symbol.begin(), priceInfo.symbol.end(), '-'), priceInfo.symbol.end());
 	if (this->checked < n) {
 		this - checked++;
 		const std::string create_table = "CREATE TABLE IF NOT EXISTS " + priceInfo.symbol + timeframe + source + " (symbol text, change numeric, prcntChange numeric, high numeric, low numeric, last numeric, open numeric, volume numeric, quoteVolume text, openTime string)";

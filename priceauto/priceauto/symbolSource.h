@@ -15,6 +15,7 @@ struct infoStruct {
 	std::string quoteVolume;
 	std::string openTime;
 	int responseCode;
+	std::string steamHash;
 };
 
 #endif // !SYMBOLSOURCE_H
