@@ -15,6 +15,8 @@ private:
 	void cleanUpData(std::vector<infoStruct>& priceInfoVector, std::string symbol, std::string timeframe);
 	void deleteLastRow(std::string symbol, std::string timeframe, std::string source);
 	int checked{ 0 };
+	int createTimeframeTable = 0;
+	int convertOpenTimeToMin(std::string openTime);
 public:
 	sqlite3* db;
 	sqlite3* dbSmybol;

@@ -121,86 +121,88 @@ int main() {
 		if (tempMinute != minute) {
 			minute = tempMinute;
 			std::vector<std::thread> dbIntervalThreads;
-			std::cout << localTimeInfo.tm_hour << " :hour " << std::endl;
 			for (int i = 0; i < n; i++) {
-//				dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "1min", db.symbols[i].symbol, "interval", 60000 / sleep, false, db.symbols[i].source));
-				db.insertTimeframe("1min", db.symbols[i].symbol, "interval", 60000 / sleep, false, db.symbols[i].source);
+				dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "1min", db.symbols[i].symbol, "interval", 60000 / sleep, false, db.symbols[i].source));
+//				db.insertTimeframe("1min", db.symbols[i].symbol, "interval", 60000 / sleep, false, db.symbols[i].source);
 				minuteCount = 0;
 			}
-			if (minute % 3 == 0) {
-				for (int i = 0; i < n; i++) {
-//					dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "3min", db.symbols[i].symbol, "interval", (60000 * 3) / sleep, false, db.symbols[i].source));
-					db.insertTimeframe("3min", db.symbols[i].symbol, "interval", (60000 * 3) / sleep, false, db.symbols[i].source);
-					minute3Count = 0;
-				}
-			}
-			if (minute % 5 == 0) {
-				for (int i = 0; i < n; i++) {
-//					dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "5min", db.symbols[i].symbol, "interval", (60000 * 5) / sleep, false, db.symbols[i].source));
-					db.insertTimeframe("5min", db.symbols[i].symbol, "interval", (60000 * 5) / sleep, false, db.symbols[i].source);
-					minute5Count = 0;
-				}
-			}
 			if (minute % 15 == 0) {
-				for (int i = 0; i < n; i++) {
-//					dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "15min", db.symbols[i].symbol, "interval", (60000 * 15) / sleep, false, db.symbols[i].source));
-					db.insertTimeframe("15min", db.symbols[i].symbol, "interval", (60000 * 15) / sleep, false, db.symbols[i].source);
-					minute15Count = 0;
-					scrapeSteam = true;
-				}
+				scrapeSteam = true;
 			}
-			if (minute % 30 == 0) {
-				for (int i = 0; i < n; i++) {
-//					dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "30min", db.symbols[i].symbol, "interval", (60000 * 30) / sleep, false, db.symbols[i].source));
-					db.insertTimeframe("30min", db.symbols[i].symbol, "interval", (60000 * 30) / sleep, false, db.symbols[i].source);
-					minute30Count = 0;
-				}
-			}
-			if (tempHour != hour) {
-				hour = tempHour;
-				if (hour % 1 == 0) {
-					for (int i = 0; i < n; i++) {
-//						dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "30min", db.symbols[i].symbol, "interval", (60000 * 30) / sleep, false, db.symbols[i].source));
-						db.insertTimeframe("1hr", db.symbols[i].symbol, "interval", (60000 * 60) / sleep, false, db.symbols[i].source);
-						hour1Count = 0;
-					}
-				}
-				if (hour % 2 == 0) {
-					for (int i = 0; i < n; i++) {
-//						dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "30min", db.symbols[i].symbol, "interval", (60000 * 30) / sleep, false, db.symbols[i].source));
-						db.insertTimeframe("2hr", db.symbols[i].symbol, "interval", ((60000 * 60) * 2) / sleep, false, db.symbols[i].source);
-						hour2Count = 0;
-					}
-				}
-				if (hour % 4 == 0) {
-					for (int i = 0; i < n; i++) {
-//						dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "30min", db.symbols[i].symbol, "interval", (60000 * 30) / sleep, false, db.symbols[i].source));
-						db.insertTimeframe("4hr", db.symbols[i].symbol, "interval", ((60000 * 60) * 4) / sleep, false, db.symbols[i].source);
-						hour4Count = 0;
-					}
-				}
-				if (hour % 6 == 0) {
-					for (int i = 0; i < n; i++) {
-//						dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "30min", db.symbols[i].symbol, "interval", (60000 * 30) / sleep, false, db.symbols[i].source));
-						db.insertTimeframe("6hr", db.symbols[i].symbol, "interval", ((60000 * 60) * 6) / sleep, false, db.symbols[i].source);
-						hour6Count = 0;
-					}
-				}
-				if (hour % 8 == 0) {
-					for (int i = 0; i < n; i++) {
-//						dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "30min", db.symbols[i].symbol, "interval", (60000 * 30) / sleep, false, db.symbols[i].source));
-						db.insertTimeframe("8hr", db.symbols[i].symbol, "interval", ((60000 * 60) * 8) / sleep, false, db.symbols[i].source);
-						hour8Count = 0;
-					}
-				}
-				if (hour % 12 == 0) {
-					for (int i = 0; i < n; i++) {
-//						dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "30min", db.symbols[i].symbol, "interval", (60000 * 30) / sleep, false, db.symbols[i].source));
-						db.insertTimeframe("12hr", db.symbols[i].symbol, "interval", ((60000 * 60) * 12) / sleep, false, db.symbols[i].source);
-						hour12Count = 0;
-					}
-				}
-			}
+//			if (minute % 3 == 0) {
+//				for (int i = 0; i < n; i++) {
+////					dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "3min", db.symbols[i].symbol, "interval", (60000 * 3) / sleep, false, db.symbols[i].source));
+//					db.insertTimeframe("3min", db.symbols[i].symbol, "interval", (60000 * 3) / sleep, false, db.symbols[i].source);
+//					minute3Count = 0;
+//				}
+//			}
+//			if (minute % 5 == 0) {
+//				for (int i = 0; i < n; i++) {
+////					dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "5min", db.symbols[i].symbol, "interval", (60000 * 5) / sleep, false, db.symbols[i].source));
+//					db.insertTimeframe("5min", db.symbols[i].symbol, "interval", (60000 * 5) / sleep, false, db.symbols[i].source);
+//					minute5Count = 0;
+//				}
+//			}
+//			if (minute % 15 == 0) {
+//				for (int i = 0; i < n; i++) {
+////					dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "15min", db.symbols[i].symbol, "interval", (60000 * 15) / sleep, false, db.symbols[i].source));
+//					db.insertTimeframe("15min", db.symbols[i].symbol, "interval", (60000 * 15) / sleep, false, db.symbols[i].source);
+//					minute15Count = 0;
+//					scrapeSteam = true;
+//				}
+//			}
+//			if (minute % 30 == 0) {
+//				for (int i = 0; i < n; i++) {
+////					dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "30min", db.symbols[i].symbol, "interval", (60000 * 30) / sleep, false, db.symbols[i].source));
+//					db.insertTimeframe("30min", db.symbols[i].symbol, "interval", (60000 * 30) / sleep, false, db.symbols[i].source);
+//					minute30Count = 0;
+//				}
+//			}
+//			if (tempHour != hour) {
+//				hour = tempHour;
+//				if (hour % 1 == 0) {
+//					for (int i = 0; i < n; i++) {
+////						dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "30min", db.symbols[i].symbol, "interval", (60000 * 30) / sleep, false, db.symbols[i].source));
+//						db.insertTimeframe("1hr", db.symbols[i].symbol, "interval", (60000 * 60) / sleep, false, db.symbols[i].source);
+//						hour1Count = 0;
+//					}
+//				}
+//				if (hour % 2 == 0) {
+//					for (int i = 0; i < n; i++) {
+////						dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "30min", db.symbols[i].symbol, "interval", (60000 * 30) / sleep, false, db.symbols[i].source));
+//						db.insertTimeframe("2hr", db.symbols[i].symbol, "interval", ((60000 * 60) * 2) / sleep, false, db.symbols[i].source);
+//						hour2Count = 0;
+//					}
+//				}
+//				if (hour % 4 == 0) {
+//					for (int i = 0; i < n; i++) {
+////						dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "30min", db.symbols[i].symbol, "interval", (60000 * 30) / sleep, false, db.symbols[i].source));
+//						db.insertTimeframe("4hr", db.symbols[i].symbol, "interval", ((60000 * 60) * 4) / sleep, false, db.symbols[i].source);
+//						hour4Count = 0;
+//					}
+//				}
+//				if (hour % 6 == 0) {
+//					for (int i = 0; i < n; i++) {
+////						dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "30min", db.symbols[i].symbol, "interval", (60000 * 30) / sleep, false, db.symbols[i].source));
+//						db.insertTimeframe("6hr", db.symbols[i].symbol, "interval", ((60000 * 60) * 6) / sleep, false, db.symbols[i].source);
+//						hour6Count = 0;
+//					}
+//				}
+//				if (hour % 8 == 0) {
+//					for (int i = 0; i < n; i++) {
+////						dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "30min", db.symbols[i].symbol, "interval", (60000 * 30) / sleep, false, db.symbols[i].source));
+//						db.insertTimeframe("8hr", db.symbols[i].symbol, "interval", ((60000 * 60) * 8) / sleep, false, db.symbols[i].source);
+//						hour8Count = 0;
+//					}
+//				}
+//				if (hour % 12 == 0) {
+//					for (int i = 0; i < n; i++) {
+////						dbIntervalThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "30min", db.symbols[i].symbol, "interval", (60000 * 30) / sleep, false, db.symbols[i].source));
+//						db.insertTimeframe("12hr", db.symbols[i].symbol, "interval", ((60000 * 60) * 12) / sleep, false, db.symbols[i].source);
+//						hour12Count = 0;
+//					}
+//				}
+//			}
 
 			for (int i = 0; i < dbIntervalThreads.size(); i++) {
 				dbIntervalThreads[i].join();
@@ -209,32 +211,37 @@ int main() {
 
 		}
 		else {
+			std::vector<std::thread> dbinserTimeframeThreads;
 			for (int i = 0; i < n; i++) {
-				db.insertTimeframe("1min", db.symbols[i].symbol, "interval", minuteCount, true, db.symbols[i].source);
-				db.insertTimeframe("3min", db.symbols[i].symbol, "interval", minute3Count, true, db.symbols[i].source);
-				db.insertTimeframe("5min", db.symbols[i].symbol, "interval", minute5Count, true, db.symbols[i].source);
-				db.insertTimeframe("15min", db.symbols[i].symbol, "interval", minute15Count, true, db.symbols[i].source);
-				db.insertTimeframe("30min", db.symbols[i].symbol, "interval", minute30Count, true, db.symbols[i].source);
-				db.insertTimeframe("1hr", db.symbols[i].symbol, "interval", hour1Count, true, db.symbols[i].source);
-				db.insertTimeframe("2hr", db.symbols[i].symbol, "interval", hour2Count, true, db.symbols[i].source);
-				db.insertTimeframe("4hr", db.symbols[i].symbol, "interval", hour4Count, true, db.symbols[i].source);
-				db.insertTimeframe("6hr", db.symbols[i].symbol, "interval", hour6Count, true, db.symbols[i].source);
-				db.insertTimeframe("8hr", db.symbols[i].symbol, "interval", hour8Count, true, db.symbols[i].source);
-				db.insertTimeframe("12hr", db.symbols[i].symbol, "interval", hour12Count, true, db.symbols[i].source);
+				dbinserTimeframeThreads.push_back(std::thread(&DBclass::insertTimeframe, &db, "1min", db.symbols[i].symbol, "interval", minuteCount, true, db.symbols[i].source));
+//				db.insertTimeframe("1min", db.symbols[i].symbol, "interval", minuteCount, true, db.symbols[i].source);
+//				db.insertTimeframe("3min", db.symbols[i].symbol, "interval", minute3Count, true, db.symbols[i].source);
+//				db.insertTimeframe("5min", db.symbols[i].symbol, "interval", minute5Count, true, db.symbols[i].source);
+//				db.insertTimeframe("15min", db.symbols[i].symbol, "interval", minute15Count, true, db.symbols[i].source);
+//				db.insertTimeframe("30min", db.symbols[i].symbol, "interval", minute30Count, true, db.symbols[i].source);
+//				db.insertTimeframe("1hr", db.symbols[i].symbol, "interval", hour1Count, true, db.symbols[i].source);
+//				db.insertTimeframe("2hr", db.symbols[i].symbol, "interval", hour2Count, true, db.symbols[i].source);
+//				db.insertTimeframe("4hr", db.symbols[i].symbol, "interval", hour4Count, true, db.symbols[i].source);
+//				db.insertTimeframe("6hr", db.symbols[i].symbol, "interval", hour6Count, true, db.symbols[i].source);
+//				db.insertTimeframe("8hr", db.symbols[i].symbol, "interval", hour8Count, true, db.symbols[i].source);
+//				db.insertTimeframe("12hr", db.symbols[i].symbol, "interval", hour12Count, true, db.symbols[i].source);
+			}
+			for (int i = 0; i < dbinserTimeframeThreads.size(); i++) {
+				dbinserTimeframeThreads[i].join();
 			}
 		}
 
 		minuteCount++;
-		minute3Count++;
-		minute5Count++;
-		minute15Count++;
-		minute30Count++;
-		hour1Count++;
-		hour2Count++;
-		hour4Count++;
-		hour6Count++;
-		hour8Count++;
-		hour12Count++;
+//		minute3Count++;
+//		minute5Count++;
+//		minute15Count++;
+//		minute30Count++;
+//		hour1Count++;
+//		hour2Count++;
+//		hour4Count++;
+//		hour6Count++;
+//		hour8Count++;
+//		hour12Count++;
 
 		auto end = std::chrono::high_resolution_clock::now();
 		int time = (end.time_since_epoch().count() - start.time_since_epoch().count()) / 1000000;

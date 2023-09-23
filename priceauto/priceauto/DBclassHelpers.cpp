@@ -5,10 +5,10 @@
 
 int DBclass::check_rc(int rc)
 {
-	if (rc != SQLITE_OK) {
-		std::cout << "err: " << err << std::endl;
-		return 8;
-	}
+//	if (rc != SQLITE_OK) {
+//		std::cout << "err: " << err << std::endl;
+//		return 8;
+//	}
 
 	return 0;
 }
@@ -16,4 +16,10 @@ int DBclass::check_rc(int rc)
 std::string DBclass::quotesql(const std::string& s)
 {
 	return std::string("'") + s + std::string("'");
+}
+
+int DBclass::convertOpenTimeToMin(std::string openTime)
+{
+	std::string rawOpenTime = std::to_string(openTime[9]) + std::to_string(openTime[10]);
+	return std::stoi(rawOpenTime);
 }

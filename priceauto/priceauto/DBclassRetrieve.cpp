@@ -1,6 +1,6 @@
 #include "DBclass.h"
 #include "symbolSource.h"
-
+#include <algorithm>
 infoStruct DBclass::retriveLastRow(infoStruct priceInfo, std::string source)
 {
 	infoStruct tempInfoStruct;
@@ -82,7 +82,7 @@ void DBclass::deleteLastRow(std::string symbol, std::string timeframe, std::stri
 
 void DBclass::retrievePriceInfo(std::string symbol, std::string timeframe, std::vector<infoStruct>& priceInfoVector, std::string source, int numberOfRows)
 {
-	std::string sqlQuery = "select symbol, change, prcntChange, high, low, last, open, volume, quoteVolume, openTime from " + symbol + timeframe + source;
+	std::string sqlQuery = "select symbol, change, prcntChange, high, low, last, open, volume, quoteVolume, openTime from " + symbol + timeframe + source + " ORDER BY openTime DESC LIMIT " + std::to_string(numberOfRows + 2);
 	sqlite3_stmt* stmt;
 	int rc = sqlite3_prepare_v2(db, sqlQuery.c_str(), -1, &stmt, 0);
 	if (rc == SQLITE_OK) {
@@ -105,6 +105,7 @@ void DBclass::retrievePriceInfo(std::string symbol, std::string timeframe, std::
 	}
 	this->cleanUpData(priceInfoVector, symbol, timeframe);
 	sqlite3_finalize(stmt);
+//	std::reverse(priceInfoVector.begin(), priceInfoVector.end());
 	return;
 }
 

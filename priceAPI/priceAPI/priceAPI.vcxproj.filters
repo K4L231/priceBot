@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\sqlite3">
+      <UniqueIdentifier>{461e0c15-22ef-47dd-a5c3-68f39d129b3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\DBclass">
+      <UniqueIdentifier>{4cc0fcd3-6d18-4fcc-bc03-10e434f4cb9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\structs">
+      <UniqueIdentifier>{0816d455-d43c-4506-a830-5fbed31d3b50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\endpoints">
+      <UniqueIdentifier>{08b45714-579e-410d-96dd-e5b243fe42f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\middleware">
+      <UniqueIdentifier>{0efd2c97-a411-4908-8af5-f81f46103df8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\middleware\ipLimiter">
+      <UniqueIdentifier>{9a94ec36-702b-48c5-a8ea-b3f6e44d01ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\middleware\tokenLimit">
+      <UniqueIdentifier>{162286c2-2791-4077-bfb6-5e68788a6a6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\middleware\requiredAPIParams">
+      <UniqueIdentifier>{cef0562b-0be2-45b2-98b3-514807d2d58c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="priceAPI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sqlite3.c">
+      <Filter>Source Files\sqlite3</Filter>
+    </ClCompile>
+    <ClCompile Include="shell.c">
+      <Filter>Source Files\sqlite3</Filter>
+    </ClCompile>
+    <ClCompile Include="DBclass.cpp">
+      <Filter>Source Files\DBclass</Filter>
+    </ClCompile>
+    <ClCompile Include="DBclassHelper.cpp">
+      <Filter>Source Files\DBclass</Filter>
+    </ClCompile>
+    <ClCompile Include="DBclassRetrieve.cpp">
+      <Filter>Source Files\DBclass</Filter>
+    </ClCompile>
+    <ClCompile Include="endpoints.hpp">
+      <Filter>Source Files\endpoints</Filter>
+    </ClCompile>
+    <ClCompile Include="exchanges.cpp">
+      <Filter>Source Files\endpoints</Filter>
+    </ClCompile>
+    <ClCompile Include="symbols.cpp">
+      <Filter>Source Files\endpoints</Filter>
+    </ClCompile>
+    <ClCompile Include="priceData.cpp">
+      <Filter>Source Files\endpoints</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="sqlite3.h">
+      <Filter>Source Files\sqlite3</Filter>
+    </ClInclude>
+    <ClInclude Include="DBclass.h">
+      <Filter>Source Files\DBclass</Filter>
+    </ClInclude>
+    <ClInclude Include="symbolSource.h">
+      <Filter>Source Files\structs</Filter>
+    </ClInclude>
+    <ClInclude Include="ipLimiterStruct.h">
+      <Filter>Source Files\middleware\ipLimiter</Filter>
+    </ClInclude>
+    <ClInclude Include="tokenLimiterStruct.h">
+      <Filter>Source Files\middleware\tokenLimit</Filter>
+    </ClInclude>
+    <ClInclude Include="userToken.h">
+      <Filter>Source Files\structs</Filter>
+    </ClInclude>
+    <ClInclude Include="requiredAPIParams.h">
+      <Filter>Source Files\middleware\requiredAPIParams</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
