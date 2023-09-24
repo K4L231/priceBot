@@ -22,6 +22,7 @@ struct tokenLimiterStruct : crow::ILocalMiddleware
             res.write("Your query is missing a secret token");
             res.code = 401;
             res.end();
+            return;
         }
         else {
             userToken validatedUserToken = db.validateToken(req.url_params.get("secret"));
@@ -29,6 +30,7 @@ struct tokenLimiterStruct : crow::ILocalMiddleware
                 res.write("Token is invalid!");
                 res.code = 403;
                 res.end();
+                return;
             }
             else {
                 const std::time_t now = std::time(nullptr);
@@ -42,10 +44,10 @@ struct tokenLimiterStruct : crow::ILocalMiddleware
                 }
                 else {
                     if (tokenMap[req.url_params.get("secret")] > validatedUserToken.limit) {
-                        std::cout << "5" << std::endl;
                         res.code = 429;
                         res.write("Token limit reached");
                         res.end();
+                        return;
                     }
                     tokenMap[req.url_params.get("secret")]++;
                 }

@@ -45,16 +45,21 @@ struct requiredAPIParamsStruct : crow::ILocalMiddleware
             return;
         }
 
-        std::vector<std::string> timeframes{ "1min", "3min", "5min", "15min", "30min", "1hr", "2hr", "4hr", "6hr", "8hr", "12hr", "interval"};
-        for (int i = 0; i < timeframes.size(); i++) {
-            if (timeframes[i] == req.url_params.get("interval")) break;
-            if (i == timeframes.size() - 1) {
-                res.code = 204;
-                res.write("Requested interval not found");
-                res.end();
-                return;
-            }
-        
+ //       std::vector<std::string> timeframes{ "1min", "3min", "5min", "15min", "30min", "1hr", "2hr", "4hr", "6hr", "8hr", "12hr", "interval"};
+ //       for (int i = 0; i < timeframes.size(); i++) {
+ //           if (timeframes[i] == req.url_params.get("interval")) break;
+ //           if (i == timeframes.size() - 1) {
+ //               res.code = 204;
+ //               res.write("Requested interval not found");
+ //               res.end();
+ //               return;
+ //           }
+ //       }
+        if (db.intervalList.find(req.url_params.get("interval")) == db.intervalList.end()) {
+            res.code = 204;
+            res.write("Requested interval not found");
+            res.end();
+            return;
         }
     }
 
